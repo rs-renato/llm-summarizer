@@ -32,9 +32,7 @@ class OllamaClient:
                     },  
                     messages=[
                         {'role': 'system', 'content': default_prompts.system_prompt},
-                        {'role': 'assistant', 'content': default_prompts.assistant_prompt},
                         {'role': 'user', 'content': user_prompt},
-                        {'role': 'assistant', 'content': default_prompts.assistant_prompt_2},
                         {'role': 'user', 'content': transcription},
                 ], stream=True)
 
