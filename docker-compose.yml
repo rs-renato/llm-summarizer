@@ -1,0 +1,33 @@
+services:
+  ollama-server:
+    image: ollama/ollama:latest
+    container_name: ollama-server
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    entrypoint: ["sh", "-c", "ollama serve & sleep 3 && ollama pull deepseek-r1:1.5b && wait"]
+    networks:
+      - summarizer-network
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - ollama-server
+    volumes:
+      - ./data:/data
+    environment:
+      - OPENAI_API_KEY=ollama
+      - LLM_MODEL=deepseek-r1:1.5b
+      - LLM_SERVER_URL=http://ollama-server:11434/v1
+    networks:
+      - summarizer-network
+
+volumes:
+  ollama-data:
+
+networks:
+  summarizer-network:
+    driver: bridge

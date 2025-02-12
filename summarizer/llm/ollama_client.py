@@ -1,5 +1,5 @@
 import logging,sys
-from ollama import chat
+from ollama import Client
 from prompt import default_prompts
 
 logger = logging.getLogger(__name__)
@@ -11,6 +11,7 @@ class OllamaClient:
         self.llm_server_url = llm_server_url
         self.model =  model
         self.context_window = context_window
+        self.ollama_client = Client(host=llm_server_url)
 
     def chat(self, transcription: str, custom_prompt: str):
         logger.info('⏳ Starting transcription summarization')
@@ -25,7 +26,7 @@ class OllamaClient:
 
         logger.info(f'⏳ Calling LLM API at: {self.llm_server_url}')
        
-        chunks = chat(self.model,
+        chunks = self.ollama_client.chat(self.model,
                     options={
                         'num_ctx': self.context_window,
                         'temperature': 0.3
