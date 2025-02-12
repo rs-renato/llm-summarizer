@@ -21,20 +21,20 @@ Download and install [ollama](https://github.com/ollama/ollama) to integrate loc
 $ ollama pull deepseek-r1:1.5b
 ```
 
-## Install the application dependencies
-Clone this repo and run the command bellow:
-
-```shell
-$ cd llm-summarizer
-$ pip install -e . --use-pep517
-```
-
 ## Conda installation
 Download and install [conda](https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html) to isolate your host environment from what's being installated as dependencies, then run the commands bellow to create an environment. If you preffer, you can work with `Miniconda, Pvenv, Poetry, Virtualenv, Docker` or whatever you want to isolate your environment.
 
 ```shell
+$ cd llm-summarizer
 $ conda create -n summarizer
 $ conda activate summarizer
+```
+
+## Install the application dependencies
+Clone this repo and run the command bellow:
+
+```shell
+$ pip install -e . --use-pep517
 ```
 
 ## Run it!
