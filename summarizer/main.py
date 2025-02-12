@@ -2,7 +2,7 @@ import typer, logging, os
 from app.summarizer import Summarizer
 
 LLM_MODEL = os.getenv('LLM_MODEL', 'deepseek-r1:1.5b')
-LLM_SERVER_URL = os.getenv('LLM_SERVER_URL', 'http://localhost:11434/v1')
+LLM_SERVER_URL = os.getenv('LLM_SERVER_URL', 'http://localhost:11434')
 
 app = typer.Typer(invoke_without_command=False)
 
@@ -32,7 +32,7 @@ logging.basicConfig(
     python main.py summarize -v path/to/video.mp4 -o path/to/output.md\n\n
              
     3. Summarize with a specific LLM model and API URL:
-    python main.py summarize -t path/to/transcription.txt -o path/to/output.md -m custom-model -a http://custom-api-url/v1\n\n
+    python main.py summarize -t path/to/transcription.txt -o path/to/output.md -m custom-model -a http://custom-api-url\n\n
              
     4. Enable debug mode:
     python main.py summarize -t path/to/transcription.txt -o path/to/output.md -d\n\n

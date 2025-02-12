@@ -1,6 +1,6 @@
 services:
   ollama-server:
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.5.7
     container_name: ollama-server
     restart: unless-stopped
     ports:
@@ -21,7 +21,7 @@ services:
     environment:
       - OPENAI_API_KEY=ollama
       - LLM_MODEL=deepseek-r1:1.5b
-      - LLM_SERVER_URL=http://ollama-server:11434/v1
+      - LLM_SERVER_URL=http://ollama-server:11434
     networks:
       - summarizer-network
 
