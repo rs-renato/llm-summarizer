@@ -1,0 +1,6 @@
+typer==0.15.1
+moviepy==2.1.2
+openai==1.61.1
+faster-whisper==1.1.1
+ollama==0.4.7
+setuptools >= 64
