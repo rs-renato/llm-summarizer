@@ -10,7 +10,7 @@ In today’s fast-paced work environment, time is one of our most valuable resou
 
 **Check the full article on Linkedin:** [Leveraging LLM to summarize video content](https://www.linkedin.com/pulse/leveraging-llm-summarize-video-content-renato-rodrigues-q5mpf/)
 
-# How to run it
+# How to run it in your own host
 First, let's install the dependencies for this project
 
 ## Ollama installation
@@ -59,3 +59,22 @@ $ summarize -v path/to/video.mp4 -o path/to/output.md -k
 # Provide a custom prompt for summarization:
 $ summarize -t path/to/transcription.txt -o path/to/output.md -p "Summarize this video in details"
 ```
+
+# How to run it in docker container
+In order to run it in a docker container using docker-compose, run the commands bellow:
+
+```shell
+$ cd llm-summarizer
+$ docker-compose up -d --build
+
+ ✔ Network llm-summarizer_summarizer-network  Created  0.0s 
+ ✔ Volume "llm-summarizer_ollama-data"        Created  0.0s 
+ ✔ Container ollama-server                    Started  0.1s 
+ ✔ Container llm-summarizer-app-1             Started  0.1s 
+
+$ docker exec -it llm-summarizer-app-1 summarize --help
+```
+
+*Notes:* 
+* The `docker-compose` setup maps a volume to the folder `./data` in your host, so you can put the sources files as well as the output file in there.
+* The model `deepseek-r1:1.5b` is used as base llm and it's pulled from ollama repo when the `ollama-server` service is built.
