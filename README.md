@@ -13,14 +13,6 @@ In today’s fast-paced work environment, time is one of our most valuable resou
 # How to run it
 First, let's install the dependencies for this project
 
-## Conda installation
-Download and install [conda](https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html) to isolate your host environment from what's being installated as dependencies, then run the commands bellow to create an environment. If you preffer, you can work with `Miniconda, Pvenv, Poetry, Virtualenv, Docker` or whatever you want to isolate your environment.
-
-```shell
-$ conda create -n summarizer
-$ conda activate summarizer
-```
-
 ## Ollama installation
 Download and install [ollama](https://github.com/ollama/ollama) to integrate locally with the LLM tool. You can use the LLM as you want, however, it's nice to start with a lighther model such as  
 `llama3.2:1b, qwen:1.8b, deepseek-r1:1.5b` or other that you want. If you have a big machine, go ahead and work with larger models. Be free to use Ollama in a docker container. If so, use the flag `-a http://custom-api-url/v1` in the cli command.
@@ -29,11 +21,20 @@ Download and install [ollama](https://github.com/ollama/ollama) to integrate loc
 $ ollama pull deepseek-r1:1.5b
 ```
 
-## Install the dependencies
+## Install the application dependencies
+Clone this repo and run the command bellow:
 
 ```shell
 $ cd llm-summarizer
 $ pip install -e . --use-pep517
+```
+
+## Conda installation
+Download and install [conda](https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html) to isolate your host environment from what's being installated as dependencies, then run the commands bellow to create an environment. If you preffer, you can work with `Miniconda, Pvenv, Poetry, Virtualenv, Docker` or whatever you want to isolate your environment.
+
+```shell
+$ conda create -n summarizer
+$ conda activate summarizer
 ```
 
 ## Run it!
