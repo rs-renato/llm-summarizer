@@ -4,6 +4,7 @@
 ##
 /kts/**
 /data/**
+.gradio/**
 
 ### macOS ###
 # General

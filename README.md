@@ -19,6 +19,15 @@ Download and install [ollama](https://github.com/ollama/ollama) to integrate loc
 
 ```shell
 $ ollama pull deepseek-r1:1.5b
+pulling manifest 
+pulling aabd4debf0c8... 100% ▕████████████████████████████████▏ 1.1 GB                         
+pulling 369ca498f347... 100% ▕████████████████████████████████▏  387 B                         
+pulling 6e4c38e1172f... 100% ▕████████████████████████████████▏ 1.1 KB                         
+pulling f4d24e9138dd... 100% ▕████████████████████████████████▏  148 B                         
+pulling a85fe2a2e58e... 100% ▕████████████████████████████████▏  487 B                         
+verifying sha256 digest 
+writing manifest 
+success 
 ```
 
 ## Conda installation
@@ -26,15 +35,36 @@ Download and install [conda](https://docs.conda.io/projects/conda/en/stable/user
 
 ```shell
 $ cd llm-summarizer
-$ conda create -n summarizer
+$ conda env create --file environment.yml
+done
+#
+# To activate this environment, use
+#
+#     $ conda activate summarizer
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
 $ conda activate summarizer
 ```
 
 ## Install the application dependencies
-Clone this repo and run the command bellow:
+Clone this repo and run the command bellow. Basically it creates the `summarize` entrypoint in your host:
 
 ```shell
 $ pip install -e . --use-pep517
+Obtaining file:///Users/renatorodrigues/Documents/Initiatives/AI/llm-summarizer
+  Installing build dependencies ... done
+  Checking if build backend supports build_editable ... done
+  Getting requirements to build editable ... done
+  Preparing editable metadata (pyproject.toml) ... done
+Building wheels for collected packages: summarizer
+  Building editable for summarizer (pyproject.toml) ... done
+  Created wheel for summarizer: filename=summarizer-0.1.dev0-0.editable-py3-none-any.whl size=4459 sha256=9e534f5ee2d8d5c2eea44fbadf434b49c05d835be84def3168f99e67203bd64c
+  Stored in directory: /private/var/folders/7j/n57v19mx0d793jbj3j559lxh0000gn/T/pip-ephem-wheel-cache-zeeafes_/wheels/df/29/ec/7b9176cd8ff44c6e2d536a80eaafabeabeb1a5bf5ade8c3d48
+Successfully built summarizer
+Installing collected packages: summarizer
+Successfully installed summarizer-0.1.dev0
 ```
 
 ## Run it!
@@ -67,14 +97,100 @@ In order to run it in a docker container using docker-compose, run the commands 
 $ cd llm-summarizer
 $ docker-compose up -d --build
 
- ✔ Network llm-summarizer_summarizer-network  Created  0.0s 
- ✔ Volume "llm-summarizer_ollama-data"        Created  0.0s 
- ✔ Container ollama-server                    Started  0.1s 
- ✔ Container llm-summarizer-app-1             Started  0.1s 
+[+] Building 54.8s (12/12) FINISHED                              docker-container:default
+[+] Running 4/4
+ ✔ Network llm-summarizer_summarizer-network  Created                                0.0s 
+ ✔ Volume "llm-summarizer_ollama-data"        Created                                0.0s 
+ ✔ Container ollama-server                    Started                                0.1s 
+ ✔ Container llm-summarizer-app-1             Started                                0.1s 
 
 $ docker exec -it llm-summarizer-app-1 summarize --help
+Usage: summarize  [OPTIONS]
+Summarize a transcription or video file by extracting audio, transcribing it, and summarizing the content using an LLM. See usage examples below:
 ```
 
 *Notes:* 
 * The `docker-compose` setup maps a volume to the folder `./data` in your host, so you can put the sources files as well as the output file in there.
-* The model `deepseek-r1:1.5b` is used as base llm and it's pulled from ollama repo when the `ollama-server` service is built.
+* The model `deepseek-r1:1.5b` is used as base llm and it's pulled from ollama repo when the `ollama-server` service is built. If you need to use a different
+llm model, pull it inside the docker image. Eg:
+
+```shell
+$ docker exec -it ollama-server ollama pull llama3.2:latest
+```
+
+## Uninstalling 
+Bellow are the clean up steps in case you want to revert all isntallations
+
+### Conda
+If you installed Anaconda, deactivate and remove the environment created:
+```shell
+$ cd llm-summarizer
+$ conda deactivate  
+$ conda env remove -n summarizer -y
+Remove all packages in environment /opt/anaconda3/envs/summarizer:
+
+## Package Plan ##
+  environment location: /opt/anaconda3/envs/summarizer
+
+The following packages will be REMOVED:
+
+  bzip2-1.0.8-h99b78c6_7
+  ca-certificates-2025.1.31-hf0a4a13_0
+  libexpat-2.6.4-h286801f_0
+  libffi-3.4.2-h3422bc3_5
+  liblzma-5.6.4-h39f12f2_0
+  libsqlite-3.49.1-h3f77e49_1
+  libzlib-1.3.1-h8359307_2
+  ncurses-6.5-h5e97a16_3
+  openssl-3.4.1-h81ee809_0
+  pip-25.0.1-pyh8b19718_0
+  python-3.12.8-hc22306f_1_cpython
+  readline-8.2-h92ec313_1
+  setuptools-75.8.0-pyhff2d567_0
+  tk-8.6.13-h5083fa2_1
+  tzdata-2025a-h78e105d_0
+  wheel-0.45.1-pyhd8ed1ab_1
+
+Downloading and Extracting Packages:
+
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done
+```
+
+Then please check the the link [Uninstalling Anaconda Distribution](https://docs.anaconda.com/anaconda/uninstall)
+
+### Application
+Remove the installed `summarize` application. If you used Anaconda and removed the environment, the bellow step is not necessary:
+```shell
+$ pip uninstall summarizer -y
+Found existing installation: summarizer 0.1.dev0
+Uninstalling summarizer-0.1.dev0:
+  Successfully uninstalled summarizer-0.1.dev0
+```
+
+### Ollama
+If you are using ollama in your host, just remove all models that you've downloaded:
+```shell
+$ ollama rm deepseek-r1:1.5b
+deleted 'deepseek-r1:1.5b'
+```
+In order to remove ollama from your host, follow the steps from [Ollama Documentation](https://github.com/ollama/ollama/tree/main/docs) for your specific OS.
+
+### Docker
+In case you used docker to execute this app, please run the command bellow:
+
+```shell
+$ docker-compose down -v
+[+] Running 4/2
+ ✔ Container llm-summarizer-app-1             Removed  11.2s 
+ ✔ Container ollama-server                    Removed  10.3s 
+ ✔ Volume llm-summarizer_ollama-data          Removed   0.0s 
+ ✔ Network llm-summarizer_summarizer-network  Removed   0.0s 
+
+$ docker rmi -f docker.io/library/llm-summarizer-app docker.io/ollama/ollama:0.5.7
+Untagged: docker.io/library/llm-summarizer-app:latest
+Untagged: docker.io/ollama/ollama:0.5.7
+Deleted: 19201e530337a4ced5ffb434131ca75cac78df92fd465c9ecc72bd0dd694cb94
+Deleted: 0ace9bc2a4e3c8a34a2db68df73c8fccbf38bb34a57ddc00a061bc809de9c026
+```
