@@ -5,5 +5,4 @@ ctranslate2==4.4.0
 faster-whisper==1.1.1
 ollama==0.4.7
 gradio==5.15.0
-pypdf==5.3.0
 setuptools >= 6

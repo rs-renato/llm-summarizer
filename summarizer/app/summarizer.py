@@ -8,12 +8,40 @@ from utils.file_handler import FileHandler
 from validation.argument_validator import ArgumentValidator
 
 logger = logging.getLogger(__name__)
-
 class Summarizer:
-    """Main application class that ties everything together."""
+    '''Main application class that ties everything together.'''
 
     def __init__(self):
         self.transcription_service = TranscriptionService()
+
+    def summarize_in_chat(
+        self,
+        message,
+        history,
+        transcription_file: str = None,
+        video_file: str = None,
+        output_file: str = None,
+        llm_model: str = None,
+        api_url: str = None,
+        context_window: int = None,
+        keep_files: bool = False,
+    ):
+
+        ArgumentValidator.validate_args(transcription_file, video_file)
+
+        chat_message = message
+        
+        history = [entry for entry in history if entry.get('content') != '']
+
+        if not history:
+            _, transcription = self.generate_transcription(transcription_file, video_file, output_file, keep_files)
+            chat_message = f'From the given transcription:\n{transcription}\n\n {message}'
+        
+
+        # Summarize transcription
+        summary_generator = SummaryGenerator(llm_model, api_url, context_window)
+
+        yield from summary_generator.chat(chat_message, history)
 
     def summarize(
         self,
@@ -26,8 +54,23 @@ class Summarizer:
         context_window: int = None,
         keep_files: bool = False,
     ):
-        logger.info('Starting summarization process..')
         ArgumentValidator.validate_args(transcription_file, video_file)
+
+        output_path, transcription = self.generate_transcription(transcription_file, video_file, output_file, keep_files)
+
+        # Summarize transcription
+        summary_generator = SummaryGenerator(llm_model, api_url, custom_prompt, context_window)
+
+        summary = summary_generator.generate(transcription)
+
+        # Save summary to file
+        FileHandler.save_file(summary, output_path)
+
+        logger.info('✅ Video transcription and content summary completed successfully! 🚀')
+
+    def generate_transcription(self, transcription_file, video_file, output_file, keep_files):
+        
+        logger.info('Starting summarization process..')
 
         if output_file:
             output_path = Path(output_file).resolve()
@@ -59,12 +102,5 @@ class Summarizer:
             if not output_file:
                 transcription_path = Path(transcription_file).resolve()
                 output_path = transcription_path.with_name(transcription_path.stem + '-summary').with_suffix('.md')
-
-        # Summarize transcription
-        summary_generator = SummaryGenerator(llm_model, api_url, custom_prompt, context_window)
-        summary = summary_generator.summarize(transcription)
-
-        # Save summary to file
-        FileHandler.save_file(summary, output_path)
-
-        logger.info('✅ Video transcription and content summary completed successfully! 🚀')
+                
+        return output_path,transcription
