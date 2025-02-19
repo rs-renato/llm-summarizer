@@ -5,7 +5,7 @@ from prompt import default_prompts
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', 'ollama')
 
 class OpenAIClient:
-    """Handles connectons with openai."""
+    '''Handles connectons with openai.'''
     
     def __init__(self, llm_server_url: str, model: str, context_window: str):
         self.llm_server_url = llm_server_url
@@ -29,7 +29,7 @@ class OpenAIClient:
             model=self.model,
             messages=[
                 {'role': 'system', 'content': default_prompts.system_prompt},
-                {'role': 'user', 'content': user_prompt + "\n\nTranscription:\n" + transcription},
+                {'role': 'user', 'content': user_prompt + '\n\nTranscription:\n' + transcription},
             ],
             max_tokens = self.context_window,
             temperature=0.3,
@@ -40,8 +40,8 @@ class OpenAIClient:
         response = ''
         for chunk in chunks:
             response += chunk.choices[0].delta.content or ''
-            response = response.replace("```","").replace("markdown", "")
-            sys.stdout.write("\r" + response)
+            response = response.replace('```','').replace('markdown', '')
+            sys.stdout.write('\r' + response)
             sys.stdout.flush()
 
         logging.debug(f'✅ Full LLM Response: {response}')

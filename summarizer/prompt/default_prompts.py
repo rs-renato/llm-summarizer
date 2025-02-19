@@ -70,7 +70,7 @@ assistant_prompt = '''
     For summarizing topics, I should ensure that each point is clear and that any jargon or specific terms are explained if necessary. Since it's a spoken content analysis, the
     language might be more conversational, so translating that into a structured summary will require some rephrasing without losing the original intent.
 
-    When extracting actionable points, I'll need to identify verbs like "decide," "assign," "follow up," etc., as these indicate tasks or decisions. Highlighting them in bold or
+    When extracting actionable points, I'll need to identify verbs like 'decide,' 'assign,' 'follow up,' etc., as these indicate tasks or decisions. Highlighting them in bold or
     another format within the Markdown can make them stand out for easy reference later on.
 
     Overall, this process requires attention to detail, good organizational skills, and the ability to synthesize information from a spoken transcript into a clear, structured

@@ -4,7 +4,7 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 logger = logging.getLogger(__name__)
 
 class AudioExtractor:
-    """Handles audio extraction from video files."""
+    '''Handles audio extraction from video files.'''
 
     @staticmethod
     def extract_audio(video_path: str, audio_path: str):

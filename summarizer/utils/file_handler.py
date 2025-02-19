@@ -3,7 +3,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class FileHandler:
-    """Handles file operations like saving and reading files."""
+    '''Handles file operations like saving and reading files.'''
 
     @staticmethod
     def save_file(file: str, output_path: str):
