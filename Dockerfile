@@ -7,4 +7,6 @@ COPY summarizer ./summarizer
 
 RUN pip install --no-cache-dir -r requirements.txt && pip install --no-cache-dir -e . --use-pep517
 
+EXPOSE 3007
+
 CMD ["tail", "-f", "/dev/null"]

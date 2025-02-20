@@ -1,6 +1,6 @@
 import typer, logging, os
 from app.summarizer import Summarizer
-from ui.ui_interface import launchInterface
+from ui.ui_interface import GradioInterface
 
 LLM_MODEL = os.getenv('LLM_MODEL', 'deepseek-r1:1.5b')
 LLM_SERVER_URL = os.getenv('LLM_SERVER_URL', 'http://localhost:11434')
@@ -55,6 +55,7 @@ def summarize(
     custom_prompt: str = typer.Option(None, '-p', '--prompt', help='Custom user prompt. At the end of the prompt, the video transcription will be appended.'),
     context_window: int = typer.Option(4096, '-c', '--context-window', help='Custom context window size.'),
     chat_mode: bool = typer.Option(False, '--chat', help='Launch the UI for summarization in chat mode.'),
+    chat_server_port: int = typer.Option(3007, '--chat-server-port', help='The chat server port.'),
     keep_files: bool = typer.Option(False, '-k', '--keep-files', help='Keep the audio and transcription extracted from video source.'),
     debug: bool = typer.Option(False, '-d', '--debug', help='Enable debug mode.')
 ):
@@ -62,7 +63,7 @@ def summarize(
         logger.setLevel(logging.DEBUG)
     
     if chat_mode:
-        launchInterface()
+        GradioInterface().launch(chat_server_port)
     else:
         Summarizer().summarize(
             transcription_file,

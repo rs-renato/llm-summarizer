@@ -16,6 +16,8 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - ollama-server
+    ports:
+      - "3007:3007"
     volumes:
       - ./data:/data
     environment:
