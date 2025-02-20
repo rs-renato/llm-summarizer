@@ -27,22 +27,25 @@ logging.basicConfig(
     Summarize a transcription or video file by extracting audio, transcribing it, and summarizing the content using an LLM. See usage examples below::\n
              
     1. Summarize with a transcription file and output path:
-    python main.py summarize -t path/to/transcription.txt -o path/to/output.md\n\n
+    summarize -t path/to/transcription.txt -o path/to/output.md\n\n
     
     2. Summarize with a video file and output path:
-    python main.py summarize -v path/to/video.mp4 -o path/to/output.md\n\n
+    summarize -v path/to/video.mp4 -o path/to/output.md\n\n
              
     3. Summarize with a specific LLM model and API URL:
-    python main.py summarize -t path/to/transcription.txt -o path/to/output.md -m custom-model -a http://custom-api-url\n\n
+    summarize -t path/to/transcription.txt -o path/to/output.md -m custom-model -a http://custom-api-url\n\n
              
     4. Enable debug mode:
-    python main.py summarize -t path/to/transcription.txt -o path/to/output.md -d\n\n
+    summarize -t path/to/transcription.txt -o path/to/output.md -d\n\n
              
     5. Keep the extracted audio and transcription files:
-    python main.py summarize -v path/to/video.mp4 -o path/to/output.md -k\n\n
+    summarize -v path/to/video.mp4 -o path/to/output.md -k\n\n
              
     6. Provide a custom prompt for summarization:
-    python main.py summarize -t path/to/transcription.txt -o path/to/output.md -p 'Summarize this video in detail'\n\n
+    summarize -t path/to/transcription.txt -o path/to/output.md -p 'Summarize this video in detail'\n\n
+             
+    7. Launch the UI for summarization in chat mode
+    summarize --chat'\n\n
              
     Note: You can optionally set the environment variable OPENAI_API_KEY for the OpenAI API key.
 ''')

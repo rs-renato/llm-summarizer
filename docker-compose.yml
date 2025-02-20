@@ -24,6 +24,7 @@ services:
       - OPENAI_API_KEY=ollama
       - LLM_MODEL=deepseek-r1:1.5b
       - LLM_SERVER_URL=http://ollama-server:11434
+      - DOCKER_ENV=true
     networks:
       - summarizer-network
 

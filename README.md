@@ -67,8 +67,8 @@ Installing collected packages: summarizer
 Successfully installed summarizer-0.1.dev0
 ```
 
-## Run it!
-Bellow are some examples of how to run it, you can also check `summarize --help` in order to see all available options
+## Run Cli Mode!
+Bellow are some examples of how to run it, you can also check `summarize --help` in order to see all available options. Eg.:
 
 ```shell
 # Summarize with a transcription file and output path:
@@ -90,6 +90,19 @@ $ summarize -v path/to/video.mp4 -o path/to/output.md -k
 $ summarize -t path/to/transcription.txt -o path/to/output.md -p "Summarize this video in details"
 ```
 
+## Run UI Chat Mode!
+You can launch the UI for summarization in chat mode:
+
+```shell
+$ summarize --chat
+* Running on local URL:  http://127.0.0.1:3007
+2025-02-20 14:24:02 INFO _client _send_single_request HTTP Request: GET http://127.0.0.1:3007/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-02-20 14:24:02 INFO _client _send_single_request HTTP Request: HEAD http://127.0.0.1:3007/ "HTTP/1.1 200 OK"
+
+To create a public link, set `share=True` in `launch()`.
+```
+The application is launched and it's accessible at `http://localhost:3007`. For custom port, use `--chat-server-port` flag.
+
 # How to run it in docker container
 In order to run it in a docker container using docker-compose, run the commands bellow:
 
@@ -109,14 +122,24 @@ Usage: summarize  [OPTIONS]
 Summarize a transcription or video file by extracting audio, transcribing it, and summarizing the content using an LLM. See usage examples below:
 ```
 
-*Notes:* 
-* The `docker-compose` setup maps a volume to the folder `./data` in your host, so you can put the sources files as well as the output file in there.
+**Notes:** 
+* The `docker-compose` setup maps a volume to the folder `/data` in your host, so you can put the sources files as well as the output file in there.
 * The model `deepseek-r1:1.5b` is used as base llm and it's pulled from ollama repo when the `ollama-server` service is built. If you need to use a different
 llm model, pull it inside the docker image. Eg:
-
+  ```shell
+  $ docker exec -it ollama-server ollama pull llama3.2:latest
+  ```
+## UI Chat Mode in Docker
+Launch the chat mode in docker using the command bellow:
 ```shell
-$ docker exec -it ollama-server ollama pull llama3.2:latest
+$ docker exec -it llm-summarizer-app-1 summarize --chat
+* Running on local URL:  http://0.0.0.0:3007
+2025-02-20 17:28:32 INFO _client _send_single_request HTTP Request: GET http://localhost:3007/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-02-20 17:28:32 INFO _client _send_single_request HTTP Request: HEAD http://localhost:3007/ "HTTP/1.1 200 OK"
 ```
+**Notes:**
+* In `file path` textbox, be sure to fill out the value from `/data` folder. Eg.: `/data/transcription.txt`, `/data/video.mp4`
+* For custom server port in chat mode, be sure to update/expose the custom port in `Dockerfile` and/or `docker-compose`.
 
 ## Uninstalling 
 Bellow are the clean up steps in case you want to revert all isntallations
