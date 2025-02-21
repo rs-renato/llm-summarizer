@@ -71,6 +71,7 @@ class GradioInterface:
             
             yield from Summarizer().summarize_in_chat(*args, **kwargs)
         except BaseException as e:
+            args[1] = []
             raise gr.Error(str(e))
 
     def launch(self, inbrowser:bool = True, server_port:int=3007):
