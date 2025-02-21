@@ -16,7 +16,7 @@
   - [⚡️ Docker](#️-docker)
 - [🌍 Let's Connect & Collaborate!](#-lets-connect--collaborate)
 
-==🎯 **TLDR;**==
+🎯 **TLDR;**
 This project helps you summarize video content using LLMs to save time on long recordings like KT sessions, meetings, and lectures.
 
 ✅ Video Source → Extracts audio → Transcribes → Generates summaries
